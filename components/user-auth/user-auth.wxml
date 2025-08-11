@@ -1,0 +1,26 @@
+<!-- 用户授权组件 -->
+<view class="user-auth-card" wx:if="{{showAuth}}">
+  <view class="auth-header">
+    <text class="auth-title">🌟 完善个人信息</text>
+    <text class="auth-desc">获取您的微信头像和昵称，让浇水记录更加个性化</text>
+  </view>
+  
+  <view class="auth-preview">
+    <image class="preview-avatar" src="{{currentAvatar}}" mode="aspectFill"></image>
+    <text class="preview-name">{{currentName}}</text>
+  </view>
+  
+  <view class="auth-actions">
+    <button class="auth-btn primary" bindtap="handleAuth">
+      <text class="auth-btn-icon">✨</text>
+      <text>获取微信信息</text>
+    </button>
+    <button class="auth-btn secondary" bindtap="handleSkip">
+      <text>暂时跳过</text>
+    </button>
+  </view>
+  
+  <view class="auth-privacy">
+    <text class="privacy-text">我们仅用于显示您的浇水记录，不会泄露给第三方</text>
+  </view>
+</view>

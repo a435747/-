@@ -1,0 +1,148 @@
+<!-- 地图页面 - 完整交互版 -->
+<view class="page">
+  <!-- 顶部搜索栏 -->
+  <view class="tree-search-bar">
+    <input class="search-input" placeholder="输入树木编号定位 (如 27)" value="{{searchTreeId}}" bindinput="onInputTreeId" />
+    <button class="search-btn" bindtap="onSearchTree">搜索</button>
+  </view>
+
+  <!-- 地图容器 -->
+  <view class="map-container">
+    <!-- 可滚动地图区域 -->
+    <scroll-view class="map-scroll-view" scroll-x="true" scroll-y="true" scroll-left="{{scrollLeft}}" scroll-top="{{scrollTop}}">
+      <!-- 缩放包装器（由样式 transform: scale 控制） -->
+      <view class="map-wrapper" style="width: {{mapWidth}}rpx; height: {{mapHeight}}rpx; transform: scale({{mapScale}});">
+        <!-- 地图底图（远程对象存储） -->
+        <image class="map-image" src="https://636c-cloudbase-8geef97fbe06f6f1-1371111601.tcb.qcloud.la/images/images/campus-map.jpg" mode="widthFix" bindload="onImageLoad" binderror="onImageError" />
+
+        <!-- 树木点位覆盖层 -->
+        <view class="map-trees">
+          <block wx:for="{{mapTrees}}" wx:key="id">
+            <view class="map-tree interactive" style="left: {{item.mapX}}rpx; top: {{item.mapY}}rpx;" data-tree-id="{{item.id}}" bindtap="onMapTreeTap">
+              <text class="tree-emoji">{{item.emoji}}</text>
+            </view>
+          </block>
+        </view>
+      </view>
+    </scroll-view>
+
+    <!-- 右侧控制按钮 -->
+    <view class="map-controls">
+      <view class="control-btn" bindtap="resetZoom"><text class="control-icon">⟳</text></view>
+      <view class="control-btn" bindtap="locateUser"><text class="control-icon">📍</text></view>
+      <view class="control-btn" bindtap="goToMyTrees"><text class="control-icon">🌳</text></view>
+    </view>
+
+    <!-- 左下角林区切换按钮 -->
+    <view class="region-btn" bindtap="toggleRegionSelection">
+      <text class="control-icon">🏠</text>
+    </view>
+  </view>
+
+  <!-- 底部林区选择面板（复用现有弹窗样式与逻辑） -->
+  <view wx:if="{{showRegionSelection}}" class="forest-selection-modal" bindtap="hideRegionSelection" catchtouchmove="true">
+    <view class="forest-modal-content" catchtap="stopPropagation">
+      <view class="forest-modal-header">
+        <text class="forest-modal-title">切换林区</text>
+      </view>
+      <view class="forest-modal-body">
+        <view class="forest-options">
+          <view class="forest-option" data-forest="famous-teacher-forest" bindtap="selectForest">
+            <text class="forest-emoji">🌲</text>
+            <text class="forest-name">名师林</text>
+            <text class="forest-desc">名师守护参与区域</text>
+          </view>
+          <view class="forest-option" data-forest="alumni-forest" bindtap="openAlumniPicker">
+            <text class="forest-emoji">🌳</text>
+            <text class="forest-name">校友林</text>
+            <text class="forest-desc">校友参与区域</text>
+          </view>
+        </view>
+        <text class="forest-tip">点击空白处可关闭</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 校友林选择器（与 my-trees 交互一致） -->
+  <view wx:if="{{showAlumniPicker}}" class="forest-selection-modal" bindtap="closeAlumniPicker" catchtouchmove="true">
+    <view class="forest-modal-content" catchtap="stopPropagation">
+      <view class="forest-modal-header">
+        <text class="forest-modal-title">选择校友林年份与编号</text>
+        <text class="close-btn" bindtap="closeAlumniPicker">×</text>
+      </view>
+      <view class="forest-modal-body">
+        <view class="alumni-selector">
+          <picker mode="selector" range="{{alumniForestStats.zones}}" range-key="era" value="{{alumniSelection.zoneIndex}}" bindchange="onAlumniZoneChange">
+            <view class="picker-block">
+              <view class="picker-label">选择年代：</view>
+              <view class="picker-value">{{alumniForestStats.zones[alumniSelection.zoneIndex].era}}（{{alumniForestStats.zones[alumniSelection.zoneIndex].range}}）</view>
+            </view>
+          </picker>
+
+          <view class="number-field">
+            <view class="number-label">选择编号：</view>
+            <input class="number-input" type="number" placeholder="输入编号（如 350）" value="{{alumniSelection.number}}" bindinput="onAlumniNumberInput"/>
+          </view>
+
+          <view class="actions">
+            <button class="confirm-btn" bindtap="confirmAlumniSelection">前往详情</button>
+          </view>
+
+          <view class="helper-text">编号需落在所选年代区间内</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 初始林区选择弹窗 -->
+  <view wx:if="{{showForestSelectionModal}}" class="forest-selection-modal" catchtouchmove="true">
+    <view class="forest-modal-content">
+      <view class="forest-modal-header">
+        <text class="forest-modal-title">请选择要查看的林区</text>
+      </view>
+      <view class="forest-modal-body">
+        <view class="forest-options">
+          <view class="forest-option" data-forest="famous-teacher-forest" bindtap="selectForest">
+            <text class="forest-emoji">🌲</text>
+            <text class="forest-name">名师林</text>
+            <text class="forest-desc">名师守护参与区域</text>
+          </view>
+          <view class="forest-option" data-forest="alumni-forest" bindtap="selectForest">
+            <text class="forest-emoji">🌳</text>
+            <text class="forest-name">校友林</text>
+            <text class="forest-desc">校友参与区域</text>
+          </view>
+        </view>
+        <text class="forest-tip">可在左下角🏠按钮随时切换</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 树木详情弹窗 -->
+  <view wx:if="{{showTreeDetail}}" class="tree-detail-modal" catchtouchmove="true">
+    <view class="modal-content">
+      <view class="modal-header">
+        <text class="tree-title">树木编号：{{treeDetailData.id}}</text>
+        <view class="header-right">
+          <text class="region-chip">{{treeDetailData.region}}</text>
+          <view class="close-x" bindtap="closeTreeDetail">×</view>
+        </view>
+      </view>
+      <view class="modal-body">
+        <view class="tree-info info-grid">
+          <view class="info-item"><text class="label">所属</text><text class="value">{{treeDetailData.region}}</text></view>
+          <view class="info-item"><text class="label">树种</text><text class="value">{{treeDetailData.type}}</text></view>
+          <view class="info-item"><text class="label">最近浇水</text><text class="value">{{treeDetailData.lastWatered}}</text></view>
+          <view class="info-item"><text class="label">全局成长值</text><text class="value">{{treeDetailData.totalGrowthValueGlobal || 0}}</text></view>
+          <view class="info-item"><text class="label">全局浇水桶数</text><text class="value">{{treeDetailData.totalWaterAmountGlobal || 0}}</text></view>
+          <view class="info-item"><text class="label">我的成长值</text><text class="value">{{treeDetailData.myGrowthValue || 0}}</text></view>
+          <view class="info-item"><text class="label">我浇的桶数</text><text class="value">{{treeDetailData.myWaterAmount || 0}}</text></view>
+        </view>
+      </view>
+      <view class="tree-actions">
+        <view class="action-btn primary" bindtap="waterTreeFromDetail">去浇水</view>
+        <view class="action-btn ghost" bindtap="closeTreeDetail">关闭</view>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,303 @@
+<!--watering.wxml-->
+<wxs src="../../../utils/imageUtils.wxs" module="imageUtils" />
+
+<!-- 根视图使用fixed定位完全覆盖整个屏幕 -->
+<view class="page-container fade-in">
+  <!-- 全屏白色背景遮罩，最底层 -->
+  <view class="full-screen-mask"></view>
+  
+  <!-- 树木图片容器 -->
+  <view class="tree-container transition-ready">
+    <!-- 背景图片 -->
+    <image 
+      class="tree-image-fullscreen {{isTransitioning ? 'transitioning' : ''}} {{!treeImageLoaded ? 'loading' : ''}}"
+      src="{{currentImageSrc}}"
+      mode="aspectFill"
+      bindload="onTreeImageLoad"
+      binderror="onTreeImageError"
+    />
+    
+    <!-- 预加载图片 -->
+    <image 
+      class="tree-image-preload"
+      src="{{nextImageSrc}}"
+      mode="aspectFill"
+      bindload="onNextImageLoad"
+    />
+    
+    <!-- 升级GIF图层 -->
+    <image 
+      wx:if="{{showUpgradeGif}}"
+      class="tree-image-upgrade {{isUpgradeReady ? 'active' : 'inactive'}}" 
+      src="{{upgradeGifSrc}}"
+      mode="aspectFill"
+      bindload="onUpgradeGifLoaded"
+    />
+    
+    <!-- 新增：小动物举牌子动画层 -->
+    <image 
+      wx:if="{{showAnimalGif}}"
+      class="animal-gif-animation {{animalGifSrc.includes('animal_1.gif') || animalGifSrc.includes('animal_2.gif') || animalGifSrc.includes('animal_5.gif') || animalGifSrc.includes('animal_7.gif') ? 'animal-gif-xlarge' : 'animal-gif-large'}} {{animalGifSrc.includes('animal_1.gif') ? 'animal-1' : animalGifSrc.includes('animal_2.gif') ? 'animal-2' : animalGifSrc.includes('animal_3.gif') ? 'animal-3' : animalGifSrc.includes('animal_4.gif') ? 'animal-4' : animalGifSrc.includes('animal_5.gif') ? 'animal-5' : animalGifSrc.includes('animal_6.gif') ? 'animal-6' : animalGifSrc.includes('animal_7.gif') ? 'animal-7' : animalGifSrc.includes('animal_8.gif') ? 'animal-8' : ''}}"
+      src="{{animalGifSrc}}"
+      mode="aspectFit"
+      wx:key="{{animalGifKey}}"
+    />
+    
+    <!-- 添加小动物举牌子提示文字 -->
+    <view wx:if="{{showAnimalGif && !waterResult.upgraded}}" class="animal-message">
+      <text>还需 {{waterResult.nextStageRemaining}} 成长值到达下一阶段</text>
+    </view>
+  </view>
+  
+  <!-- 浇水动画容器，使用wx:if和key强制重新渲染 -->
+  <block wx:if="{{isWatering}}">
+    <view class="watering-animation active {{wateringAnimationActive ? 'playing' : ''}}" wx:key="{{wateringKey}}">
+      <!-- 新的浇水GIF动画 -->
+      <image 
+        class="watering-gif"
+        src="{{wateringGif}}"
+        mode="widthFix"
+      />
+    </view>
+  </block>
+
+  <!-- 顶部右上角悬浮浇水按钮 - 添加圆圈效果 -->
+  <view class="watering-can-float-btn" catch:tap="showWateringForm">
+    <view class="btn-circle">
+      <image 
+        src="{{imageUtils.getImageUrl('/images/watering-can.png')}}" 
+        class="watering-can-btn"
+        mode="widthFix" />
+    </view>
+    <view style="position: relative; top: —30rpx;">
+      <text class="watering-can-text">点击浇水</text>
+    </view>
+  </view>
+
+  <!-- 顶部进度条悬浮 -->
+  <view class="growth-info-bar-top">
+    <view class="stage-info-mini">
+      <text class="stage-emoji-mini">{{stageEmojis[tree.stage]}}</text>
+      <text class="stage-name-mini">{{stageNames[tree.stage]}}</text>
+    </view>
+    <view class="progress-container-mini">
+      <view class="progress-bg-mini">
+        <view class="progress-fill-mini {{isWatering ? 'animating' : ''}}" 
+              style="width: {{getProgressPercent()}}%">
+        </view>
+      </view>
+      <text class="progress-text-mini">{{tree.points}}/{{tree.maxPoints || 1000}}</text>
+    </view>
+  </view>
+
+  <!-- 右侧侧边栏树木信息卡片（箭头和卡片为同一个控件） -->
+  <view class="tree-info-sidebar {{showInfoCard ? 'expanded' : 'collapsed'}}" bindtap="toggleInfoCard">
+    <view class="tree-info-content" wx:if="{{showInfoCard}}">
+      <view class="tree-info-header">
+        <text class="tree-info-emoji">{{tree.emoji || '🌳'}}</text>
+      <text class="tree-info-title">{{tree.name}}</text>
+      </view>
+      <text class="tree-info-species">{{tree.species}}</text>
+      <text class="tree-info-desc">{{tree.description}}</text>
+      <text class="tree-info-id">树木ID: {{currentTreeId}}</text>
+    </view>
+  </view>
+
+  <!-- 最新动态区域 - 改为上拉动态框 -->
+  <view class="activity-feed">
+    <view class="activity-title">最新动态</view>
+    <scroll-view class="activity-list" scroll-y="true" style="max-height: 110rpx;">
+      <view class="activity-item" wx:for="{{activityList}}" wx:key="id">
+        <image class="activity-avatar" src="{{item.avatar}}" mode="aspectFill"/>
+        <view class="activity-content">
+          <text class="activity-nickname">{{item.nickname}}</text>
+          <text class="activity-action">{{item.action}}</text>
+          <text class="activity-time">{{item.time}}</text>
+        </view>
+      </view>
+    </scroll-view>
+    <view class="pull-indicator">上拉查看更多</view>
+  </view>
+</view>
+
+<!-- 浇水表单弹窗 -->
+<view class="modal-overlay" wx:if="{{showWateringForm}}">
+  <view class="modal-inner">
+    <view class="form-header">
+      <text class="form-title">爱心浇水</text>
+      <text class="form-price">¥70.00</text>
+    </view>
+    
+    <view class="form-body">
+      <!-- 新增：匿名/实名选择 -->
+      <view class="form-item">
+        <text class="form-label">显示方式</text>
+        <radio-group class="radio-group" bindchange="onDisplayTypeChange">
+          <label class="radio-item">
+            <radio value="real" checked="{{!formData.isAnonymous}}" color="#07c160" />
+            <text class="radio-text">实名</text>
+          </label>
+          <label class="radio-item">
+            <radio value="anonymous" checked="{{formData.isAnonymous}}" color="#07c160" />
+            <text class="radio-text">匿名</text>
+          </label>
+        </radio-group>
+      </view>
+      
+      <!-- 姓名输入框，根据匿名状态显示/隐藏 -->
+      <view class="form-item" wx:if="{{!formData.isAnonymous}}">
+        <text class="form-label">姓名</text>
+        <input class="form-input" placeholder="请输入您的姓名" bindinput="inputName" value="{{formData.name}}"/>
+      </view>
+      
+      <view class="form-item">
+        <text class="form-label">留言</text>
+        <input class="form-input" placeholder="请输入留言（选填）" bindinput="inputMessage" value="{{formData.message}}"/>
+      </view>
+      
+      <view class="form-info">
+        <text class="info-text">每次浇水将为树木增加成长值</text>
+        <text class="info-text">您的爱心将用于校园绿化建设</text>
+      </view>
+    </view>
+    
+    <!-- 修改按钮容器 -->
+    <view class="form-actions-compact">
+      <button class="modal-btn cancel-btn" bindtap="cancelWatering">取消</button>
+      <button class="modal-btn pay-btn" bindtap="startPayment">微信支付</button>
+    </view>
+  </view>
+</view>
+
+<!-- 浇水结果弹窗 -->
+<view class="modal" wx:if="{{showResult}}">
+  <view class="modal-content">
+    
+    <view class="result-body">
+      <view class="result-icon">{{waterResult.upgraded ? '🎉' : '💧'}}</view>
+      <view class="result-message">
+        <text wx:if="{{waterResult.upgraded}}">恭喜！树木已升级至 {{waterResult.stageName}}</text>
+        <text wx:else>树木成长值 +{{waterResult.pointsGained}}</text>
+      </view>
+      
+      <view class="result-stats">
+        <view class="result-stat-item">
+          <text class="stat-label">本次浇水</text>
+          <text class="stat-value">{{waterResult.wateringAmount}}桶水</text>
+        </view>
+        <view class="result-stat-item">
+          <text class="stat-label">累计浇水</text>
+          <text class="stat-value">{{waterResult.totalWateringCount}}次</text>
+        </view>
+        <view class="result-stat-item">
+          <text class="stat-label">总浇水量</text>
+          <text class="stat-value">{{waterResult.totalWateringAmount}}桶水</text>
+        </view>
+        <view class="result-stat-item">
+          <text class="stat-label">总成长值</text>
+          <text class="stat-value">{{waterResult.totalGrowthValue}}</text>
+        </view>
+      </view>
+      
+      <view class="next-stage-info" wx:if="{{!waterResult.upgraded}}">
+        <text class="next-stage-text">距离下一阶段还需 {{waterResult.nextStageRemaining}} 成长值</text>
+      </view>
+      
+      <view class="certificate-link" bindtap="downloadCertificate">
+        <text class="certificate-icon">📜</text>
+        <text class="certificate-text">点击下载浇水证书</text>
+      </view>
+    </view>
+    
+    <view class="result-footer">
+      <button class="result-btn continue" bindtap="continueWatering">继续浇水</button>
+      <button class="result-btn close" bindtap="closeResult">关闭</button>
+    </view>
+  </view>
+</view>
+
+<!-- 证书弹窗 -->
+<view class="certificate-modal" wx:if="{{showCertificate}}" catchtouchmove="preventTouchMove">
+  <view class="certificate-container">
+    <view class="certificate-header">
+      <text class="certificate-title">浇水证书</text>
+      <text class="close-btn" bindtap="closeCertificate">×</text>
+    </view>
+
+    <view class="certificate-content">
+      <view class="certificate-image-container" id="cert-container">
+        <image src="{{imageUtils.getImageUrl('/images/certificate-bg.jpg')}}" mode="widthFix" class="certificate-bg"></image>
+
+        <!-- 证书编号 -->
+        <view class="certificate-number" id="cert-number">NO.{{currentCertificate.certNumber}}</view>
+        
+        <!-- 用户名 -->
+        <view class="certificate-name" id="cert-name">{{currentCertificate.name}}</view>
+
+        <!-- 日期 -->
+        <view class="certificate-date" id="cert-date">
+          <text class="certificate-year" id="cert-year">{{currentCertificate.year}}</text>
+          <text class="certificate-month" id="cert-month">{{currentCertificate.month}}</text>
+          <text class="certificate-day" id="cert-day">{{currentCertificate.day}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="certificate-footer">
+      <button class="save-btn" bindtap="saveCertificate">保存证书到相册</button>
+    </view>
+  </view>
+</view> 
+
+<!-- 强制显示的弹窗 -->
+<view class="force-modal" wx:if="{{showResult}}" style="position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.7); z-index:999999; display:flex; justify-content:center; align-items:center;">
+  <view style="background:white; width:80%; max-width:600rpx; border-radius:20rpx; overflow:hidden; box-shadow:0 4rpx 20rpx rgba(0,0,0,0.2);">
+    <view style="background:#4CAF50; color:white; padding:20rpx; text-align:center;">
+      <text style="font-size:36rpx; font-weight:bold;">{{waterResult.upgraded ? '恭喜升级！' : '浇水成功！'}}</text>
+    </view>
+    
+    <view style="padding:30rpx;">
+      <view style="font-size:60rpx; text-align:center; margin-bottom:20rpx;">{{waterResult.upgraded ? '🎉' : '💧'}}</view>
+      <view style="text-align:center; font-size:32rpx; font-weight:bold; color:#333; margin-bottom:30rpx;">
+        <text wx:if="{{waterResult.upgraded}}">恭喜！树木已升级至 {{waterResult.stageName}}</text>
+        <text wx:else>树木成长值 +{{waterResult.pointsGained}}</text>
+      </view>
+      
+      <view style="background:#f8f8f8; border-radius:10rpx; padding:20rpx; margin-bottom:20rpx; display:flex; flex-wrap:wrap;">
+        <view style="width:50%; padding:10rpx; box-sizing:border-box;">
+          <text style="font-size:24rpx; color:#666; display:block;">本次浇水</text>
+          <text style="font-size:28rpx; color:#4CAF50; font-weight:bold;">{{waterResult.wateringAmount}}桶水</text>
+        </view>
+        <view style="width:50%; padding:10rpx; box-sizing:border-box;">
+          <text style="font-size:24rpx; color:#666; display:block;">累计浇水</text>
+          <text style="font-size:28rpx; color:#4CAF50; font-weight:bold;">{{waterResult.totalWateringCount}}次</text>
+        </view>
+        <view style="width:50%; padding:10rpx; box-sizing:border-box;">
+          <text style="font-size:24rpx; color:#666; display:block;">总浇水量</text>
+          <text style="font-size:28rpx; color:#4CAF50; font-weight:bold;">{{waterResult.totalWateringAmount}}桶水</text>
+        </view>
+        <view style="width:50%; padding:10rpx; box-sizing:border-box;">
+          <text style="font-size:24rpx; color:#666; display:block;">总成长值</text>
+          <text style="font-size:28rpx; color:#4CAF50; font-weight:bold;">{{waterResult.totalGrowthValue}}</text>
+        </view>
+      </view>
+      
+      <view wx:if="{{!waterResult.upgraded}}" style="text-align:center; margin:20rpx 0;">
+        <text style="font-size:26rpx; color:#FF9800;">距离下一阶段还需 {{waterResult.nextStageRemaining}} 成长值</text>
+      </view>
+      
+      <view bindtap="downloadCertificate" style="background:#e3f2fd; border:2rpx solid #2196F3; border-radius:10rpx; padding:20rpx; margin-top:20rpx; display:flex; align-items:center; justify-content:center; box-shadow: 0 2rpx 8rpx rgba(33, 150, 243, 0.2); active:opacity:0.8;">
+        <text style="font-size:40rpx; margin-right:10rpx;">📜</text>
+        <text style="color:#2196F3; font-size:28rpx; font-weight:bold;">点击下载浇水证书</text>
+      </view>
+    </view>
+    
+    <view style="display:flex; border-top:1rpx solid #eee;">
+      <button bindtap="continueWatering" style="flex:1; border:none; border-radius:0; padding:20rpx; font-size:30rpx; background:#4CAF50; color:white;">继续浇水</button>
+      <button bindtap="closeResult" style="flex:1; border:none; border-radius:0; padding:20rpx; font-size:30rpx; background:#f5f5f5; color:#666;">关闭</button>
+    </view>
+  </view>
+</view> 
+
+<!-- 隐藏的临时canvas，用于保存图片 -->
+<canvas canvas-id="tempCanvas" style="position: absolute; left: -9999px; width: 1187px; height: 830px;"></canvas> 

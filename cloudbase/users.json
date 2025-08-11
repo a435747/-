@@ -1,0 +1,28 @@
+[
+  {
+    "userId": "example_user1",
+    "nickName": "小明",
+    "avatarUrl": "cloud://tree-images/avatar1.png",
+    "gender": 1,
+    "country": "China",
+    "province": "Jilin",
+    "city": "Changchun",
+    "language": "zh_CN",
+    "createdAt": {
+      "$date": "2025-07-01T08:00:00Z"
+    }
+  },
+  {
+    "userId": "example_user2",
+    "nickName": "小王",
+    "avatarUrl": "cloud://tree-images/avatar2.png",
+    "gender": 1,
+    "country": "China",
+    "province": "Jilin",
+    "city": "Changchun",
+    "language": "zh_CN",
+    "createdAt": {
+      "$date": "2025-07-02T10:15:00Z"
+    }
+  }
+] 

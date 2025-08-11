@@ -1,0 +1,26 @@
+[
+  {
+    "id": "comment1",
+    "treeId": "1",
+    "userId": "example_user1",
+    "userName": "小明",
+    "avatar": "cloud://tree-images/avatar1.png",
+    "content": "这棵树很漂亮，每年秋天的银杏叶特别好看！",
+    "likes": 8,
+    "createdAt": {
+      "$date": "2025-07-24T09:30:00Z"
+    }
+  },
+  {
+    "id": "comment2",
+    "treeId": "1",
+    "userId": "example_user2",
+    "userName": "小王",
+    "avatar": "cloud://tree-images/avatar2.png",
+    "content": "我很喜欢这棵树，每次路过都会驻足观赏一番。",
+    "likes": 15,
+    "createdAt": {
+      "$date": "2025-07-23T15:45:00Z"
+    }
+  }
+] 

@@ -1,0 +1,18 @@
+[
+  {
+    "id": "collection1",
+    "userId": "example_user1",
+    "treeId": "1",
+    "createdAt": {
+      "$date": "2025-07-24T09:45:00Z"
+    }
+  },
+  {
+    "id": "collection2",
+    "userId": "example_user2",
+    "treeId": "2",
+    "createdAt": {
+      "$date": "2025-07-23T14:30:00Z"
+    }
+  }
+] 

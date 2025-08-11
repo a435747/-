@@ -1,0 +1,1109 @@
+/* 全新设计的我的树木页面样式 */
+
+/* 现代化容器 */
+.modern-container {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #f8fffe 0%, #f0f9ff 100%);
+  padding-bottom: 120rpx;
+}
+
+/* 顶部英雄卡片 */
+.hero-card {
+  position: relative;
+  margin: 20rpx;
+  border-radius: 24rpx;
+  overflow: hidden;
+  box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.12);
+}
+
+.hero-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.hero-pattern {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(circle at 25% 25%, rgba(255,255,255,0.1) 0%, transparent 50%),
+    radial-gradient(circle at 75% 75%, rgba(255,255,255,0.1) 0%, transparent 50%);
+}
+
+.hero-content {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 40rpx 30rpx;
+  color: white;
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  position: relative;
+  cursor: pointer;
+}
+
+.user-avatar {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 24rpx;
+  margin-right: 24rpx;
+  border: 4rpx solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.2);
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-name {
+  font-size: 42rpx;
+  font-weight: 700;
+  margin-bottom: 8rpx;
+  text-shadow: 0 2rpx 4rpx rgba(0, 0, 0, 0.3);
+}
+
+.user-title {
+  font-size: 28rpx;
+  opacity: 0.9;
+  font-weight: 500;
+}
+
+/* 头像容器样式 */
+.avatar-container {
+  position: relative;
+}
+
+.avatar-button {
+  position: relative;
+  background: none !important;
+  border: none !important;
+  padding: 0 !important;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.avatar-button::after {
+  border: none !important;
+}
+
+.avatar-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.avatar-button:active .avatar-overlay {
+  opacity: 1;
+}
+
+.avatar-text {
+  color: white;
+  font-size: 20rpx;
+  text-align: center;
+  line-height: 1.2;
+}
+
+/* 昵称编辑样式 */
+.nickname-edit {
+  position: relative;
+}
+
+.nickname-input {
+  background: transparent;
+  border: none;
+  font-size: 32rpx;
+  font-weight: 600;
+  color: white;
+  text-align: left;
+  padding: 0;
+  width: 200rpx;
+  min-height: 40rpx;
+}
+
+.nickname-input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 400;
+}
+
+.nickname-input:focus {
+  outline: none;
+  border-bottom: 2rpx solid rgba(255, 255, 255, 0.5);
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.achievement-badge {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10rpx);
+  padding: 20rpx 24rpx;
+  border-radius: 20rpx;
+  text-align: center;
+  border: 1rpx solid rgba(255, 255, 255, 0.3);
+}
+
+.badge-number {
+  display: block;
+  font-size: 48rpx;
+  font-weight: 800;
+  margin-bottom: 4rpx;
+  text-shadow: 0 2rpx 4rpx rgba(0, 0, 0, 0.3);
+}
+
+.badge-label {
+  display: block;
+  font-size: 24rpx;
+  opacity: 0.9;
+  font-weight: 500;
+}
+
+/* 统计网格 */
+.stats-grid {
+  display: flex;
+  gap: 16rpx;
+  margin: 20rpx;
+}
+
+.stat-card {
+  flex: 1;
+  background: white;
+  border-radius: 20rpx;
+  padding: 32rpx 20rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.08);
+  border: 1rpx solid rgba(0, 0, 0, 0.05);
+}
+
+.stat-icon {
+  font-size: 48rpx;
+  margin-bottom: 16rpx;
+}
+
+.stat-content {
+  text-align: center;
+}
+
+.stat-number {
+  display: block;
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 4rpx;
+}
+
+.stat-label {
+  display: block;
+  font-size: 24rpx;
+  color: #666;
+  font-weight: 500;
+}
+
+/* 现代化标签导航 */
+.modern-tabs {
+  display: flex;
+  background: white;
+  margin: 20rpx;
+  border-radius: 16rpx;
+  padding: 8rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.08);
+}
+
+.tab-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20rpx 16rpx;
+  border-radius: 12rpx;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.tab-item.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  transform: scale(1.02);
+}
+
+.tab-icon {
+  font-size: 28rpx;
+  margin-bottom: 8rpx;
+}
+
+.tab-text {
+  font-size: 24rpx;
+  font-weight: 600;
+}
+
+.tab-indicator {
+  position: absolute;
+  bottom: -8rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 24rpx;
+  height: 4rpx;
+  background: white;
+  border-radius: 2rpx;
+}
+
+/* 内容区域 */
+.content-area {
+  flex: 1;
+  margin: 0;
+}
+
+/* 滚动视图 */
+.record-scroll {
+  height: calc(100vh - 600rpx);
+}
+
+.trees-scroll {
+  height: calc(100vh - 320rpx);
+  min-height: 500rpx;
+  padding-bottom: 40rpx;
+}
+
+/* 空状态 */
+.empty-state {
+  text-align: center;
+  padding: 100rpx 40rpx;
+}
+
+.empty-icon {
+  font-size: 120rpx;
+  margin-bottom: 24rpx;
+  opacity: 0.6;
+}
+
+.empty-title {
+  display: block;
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 12rpx;
+}
+
+.empty-subtitle {
+  display: block;
+  font-size: 26rpx;
+  color: #666;
+}
+
+/* 浇水记录卡片 */
+.record-card {
+  background: white;
+  border-radius: 20rpx;
+  margin-bottom: 20rpx;
+  overflow: hidden;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.06);
+  border: 1rpx solid rgba(0, 0, 0, 0.05);
+}
+
+.record-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24rpx;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+
+.record-user {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.record-avatar {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 16rpx;
+  margin-right: 16rpx;
+  border: 2rpx solid #f0f0f0;
+}
+
+.record-user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.record-username {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 4rpx;
+}
+
+.record-time {
+  font-size: 22rpx;
+  color: #999;
+}
+
+.record-amount {
+  text-align: right;
+}
+
+.amount-number {
+  display: block;
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #10b981;
+  margin-bottom: 2rpx;
+}
+
+.amount-label {
+  display: block;
+  font-size: 20rpx;
+  color: #666;
+}
+
+.record-body {
+  padding: 24rpx;
+}
+
+.record-tree-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.tree-icon-badge {
+  width: 60rpx;
+  height: 60rpx;
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  border-radius: 12rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30rpx;
+  margin-right: 16rpx;
+}
+
+.tree-details {
+  flex: 1;
+}
+
+.tree-name {
+  display: block;
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 4rpx;
+}
+
+.tree-location {
+  display: block;
+  font-size: 24rpx;
+  color: #666;
+}
+
+.record-message {
+  margin-top: 16rpx;
+}
+
+.message-bubble {
+  background: #f8f9ff;
+  border: 1rpx solid #e1e5fe;
+  border-radius: 16rpx;
+  padding: 16rpx 20rpx;
+  position: relative;
+}
+
+.message-bubble::before {
+  content: '';
+  position: absolute;
+  top: -6rpx;
+  left: 20rpx;
+  width: 0;
+  height: 0;
+  border-left: 6rpx solid transparent;
+  border-right: 6rpx solid transparent;
+  border-bottom: 6rpx solid #f8f9ff;
+}
+
+.message-text {
+  font-size: 26rpx;
+  color: #4c51bf;
+  line-height: 1.4;
+  font-style: italic;
+}
+
+.record-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 24rpx;
+  background: #fafafa;
+}
+
+.record-stats {
+  display: flex;
+  align-items: center;
+}
+
+.water-stat {
+  font-size: 24rpx;
+  color: #2563eb;
+  font-weight: 500;
+}
+
+.certificate-btn {
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 12rpx 20rpx;
+  border-radius: 12rpx;
+  font-size: 24rpx;
+  font-weight: 500;
+  box-shadow: 0 2rpx 8rpx rgba(102, 126, 234, 0.3);
+}
+
+.certificate-icon {
+  margin-right: 8rpx;
+}
+
+/* 树木网格 */
+.trees-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+  padding: 0 20rpx 20rpx 20rpx;
+}
+
+.tree-card {
+  width: 100%;
+  background: white;
+  border-radius: 20rpx;
+  overflow: hidden;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.06);
+  border: 1rpx solid rgba(0, 0, 0, 0.05);
+}
+
+.tree-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx;
+  background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+}
+
+.tree-emoji {
+  font-size: 48rpx;
+}
+
+.tree-stage-badge {
+  background: rgba(255, 255, 255, 0.8);
+  padding: 8rpx 12rpx;
+  border-radius: 12rpx;
+  border: 1rpx solid rgba(255, 255, 255, 0.3);
+}
+
+.stage-text {
+  font-size: 20rpx;
+  font-weight: 600;
+  color: #374151;
+}
+
+.tree-card-body {
+  padding: 20rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.tree-name {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.tree-species {
+  font-size: 24rpx;
+  color: #666;
+  font-weight: 500;
+}
+
+.tree-location {
+  font-size: 22rpx;
+  color: #999;
+}
+
+.tree-progress-section {
+  padding: 16rpx 20rpx 20rpx;
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12rpx;
+}
+
+.progress-label {
+  font-size: 22rpx;
+  color: #666;
+  font-weight: 500;
+}
+
+.progress-numbers {
+  font-size: 20rpx;
+  color: #10b981;
+  font-weight: 600;
+}
+
+.progress-bar {
+  height: 8rpx;
+  background: #e5e7eb;
+  border-radius: 4rpx;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #10b981 0%, #34d399 100%);
+  border-radius: 4rpx;
+  transition: width 0.3s ease;
+}
+
+.tree-stats-row {
+  display: flex;
+  gap: 16rpx;
+  padding: 0 20rpx 20rpx;
+}
+
+.tree-stat-item {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  background: #f8fafc;
+  padding: 8rpx 12rpx;
+  border-radius: 8rpx;
+  flex: 1;
+  justify-content: center;
+}
+
+.stat-icon {
+  font-size: 20rpx;
+}
+
+.stat-text {
+  font-size: 20rpx;
+  color: #374151;
+  font-weight: 500;
+}
+
+/* 悬浮操作按钮 */
+.fab-container {
+  position: fixed;
+  bottom: 120rpx;
+  right: 40rpx;
+  z-index: 1000;
+}
+
+.fab-main {
+  width: 112rpx;
+  height: 112rpx;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 56rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8rpx 24rpx rgba(102, 126, 234, 0.4);
+}
+
+.fab-icon {
+  font-size: 48rpx;
+  color: white;
+  font-weight: 300;
+}
+
+/* 快速操作弹窗 */
+.quick-actions-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.quick-actions-content {
+  background: white;
+  border-radius: 24rpx;
+  padding: 40rpx;
+  margin: 40rpx;
+  box-shadow: 0 16rpx 48rpx rgba(0, 0, 0, 0.2);
+}
+
+.quick-action-item {
+  display: flex;
+  align-items: center;
+  padding: 24rpx;
+  border-radius: 16rpx;
+  margin-bottom: 16rpx;
+  background: #f8fafc;
+  border: 1rpx solid #e5e7eb;
+}
+
+.quick-action-item:last-child {
+  margin-bottom: 0;
+}
+
+.quick-action-icon {
+  font-size: 36rpx;
+  margin-right: 20rpx;
+}
+
+.quick-action-text {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+/* 证书模态框现代化 */
+.certificate-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3000;
+}
+
+.certificate-container {
+  background: white;
+  border-radius: 24rpx;
+  margin: 40rpx;
+  overflow: hidden;
+  box-shadow: 0 16rpx 48rpx rgba(0, 0, 0, 0.2);
+  max-width: 640rpx;
+  width: 100%;
+}
+
+.certificate-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 32rpx;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.certificate-title {
+  font-size: 32rpx;
+  font-weight: 700;
+}
+
+.close-btn {
+  font-size: 48rpx;
+  font-weight: 300;
+  opacity: 0.8;
+}
+
+.certificate-content {
+  padding: 32rpx;
+}
+
+.certificate-footer {
+  padding: 24rpx 32rpx;
+  background: #f8fafc;
+  border-top: 1rpx solid #e5e7eb;
+}
+
+.modern-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+  box-shadow: 0 4rpx 16rpx rgba(102, 126, 234, 0.3);
+}
+
+/* 调试面板现代化 */
+.debug-panel {
+  position: fixed;
+  bottom: 200rpx;
+  left: 20rpx;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  border-radius: 16rpx;
+  overflow: hidden;
+  backdrop-filter: blur(10rpx);
+  z-index: 1500;
+}
+
+.debug-header {
+  padding: 16rpx 20rpx;
+  background: rgba(255, 255, 255, 0.1);
+  border-bottom: 1rpx solid rgba(255, 255, 255, 0.2);
+}
+
+.debug-title {
+  font-size: 24rpx;
+  font-weight: 600;
+}
+
+.debug-content {
+  padding: 20rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+}
+
+.debug-btn {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 1rpx solid rgba(255, 255, 255, 0.3);
+  border-radius: 8rpx;
+  padding: 12rpx 16rpx;
+  font-size: 22rpx;
+}
+
+.debug-info {
+  font-size: 20rpx;
+  opacity: 0.8;
+  line-height: 1.4;
+}
+
+/* 动画和过渡效果 */
+.record-card,
+.tree-card,
+.stat-card {
+  transform: translateY(0);
+  transition: all 0.3s ease;
+}
+
+.record-card:active,
+.tree-card:active,
+.stat-card:active {
+  transform: translateY(-4rpx);
+  box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.12);
+}
+
+.fab-main:active {
+  transform: scale(0.95);
+}
+
+.quick-action-item:active {
+  background: #e5e7eb;
+  transform: scale(0.98);
+}
+
+/* 响应式设计 */
+@media (max-width: 700rpx) {
+  .trees-grid {
+    flex-direction: column;
+  }
+  
+  .tree-card {
+    width: 100%;
+  }
+  
+  .stats-grid {
+    flex-direction: column;
+  }
+  
+  .hero-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24rpx;
+  }
+  
+  .achievement-badge {
+    align-self: flex-end;
+  }
+}
+
+/* 校友林和名师林专用样式 */
+
+/* 森林统计头部 */
+.forest-stats-header {
+  padding: 30rpx;
+  background: white;
+  border-radius: 20rpx;
+  margin: 20rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.08);
+}
+
+.forest-title {
+  text-align: center;
+  margin-bottom: 30rpx;
+}
+
+.title-icon {
+  font-size: 48rpx;
+  display: block;
+  margin-bottom: 10rpx;
+}
+
+.title-text {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.title-subtitle {
+  font-size: 24rpx;
+  color: #666;
+  display: block;
+}
+
+/* 校友林年代统计网格 */
+.era-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16rpx;
+}
+
+.era-stat-card {
+  background: linear-gradient(135deg, #f8f9ff 0%, #e3f2fd 100%);
+  border-radius: 12rpx;
+  padding: 20rpx;
+  text-align: center;
+  border: 1rpx solid #e1f5fe;
+}
+
+.era-zone {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #1976d2;
+  display: block;
+}
+
+.era-period {
+  font-size: 22rpx;
+  color: #666;
+  display: block;
+  margin: 4rpx 0;
+}
+
+.era-count {
+  font-size: 24rpx;
+  font-weight: bold;
+  color: #2e7d32;
+  display: block;
+}
+
+.era-range {
+  font-size: 20rpx;
+  color: #999;
+  display: block;
+  margin-top: 4rpx;
+}
+
+/* 名师林统计网格 */
+.master-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16rpx;
+}
+
+.master-stat-card {
+  background: linear-gradient(135deg, #fff8e1 0%, #f3e5f5 100%);
+  border-radius: 12rpx;
+  padding: 20rpx;
+  text-align: center;
+  border: 1rpx solid #fff3e0;
+}
+
+.stat-title {
+  font-size: 26rpx;
+  font-weight: bold;
+  color: #e65100;
+  display: block;
+}
+
+.stat-desc {
+  font-size: 22rpx;
+  color: #666;
+  display: block;
+  margin: 4rpx 0;
+}
+
+.stat-meaning {
+  font-size: 20rpx;
+  color: #7b1fa2;
+  display: block;
+  margin-top: 4rpx;
+  font-style: italic;
+}
+
+/* 校友林树木卡片 */
+.alumni-tree-card {
+  background: white;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  margin: 16rpx 20rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
+  border-left: 4rpx solid #2196f3;
+  width: calc(100% - 40rpx);
+}
+
+/* 校友林选择器样式 */
+.alumni-selector {
+  margin: 16rpx 20rpx 0 20rpx;
+  padding: 20rpx;
+  background: #ffffff;
+  border-radius: 16rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.06);
+}
+
+.picker-display {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  font-size: 26rpx;
+  color: #333;
+  padding-bottom: 12rpx;
+  border-bottom: 1rpx solid #eee;
+}
+
+.picker-value { color: #2e7d32; font-weight: 600; }
+
+.number-input {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  margin-top: 16rpx;
+}
+
+.number-input input {
+  flex: 1;
+  height: 72rpx;
+  border-radius: 12rpx;
+  border: 1rpx solid #e0e0e0;
+  padding: 0 20rpx;
+  background: #fafafa;
+}
+
+.confirm-btn {
+  height: 72rpx;
+  padding: 0 24rpx;
+  border-radius: 12rpx;
+  background: linear-gradient(135deg, #43a047, #2e7d32);
+  color: #fff;
+  box-shadow: 0 6rpx 12rpx rgba(46,125,50,0.2);
+}
+
+.helper-text {
+  margin-top: 10rpx;
+  font-size: 22rpx;
+  color: #777;
+}
+
+.alumni-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.alumni-era {
+  font-size: 22rpx;
+  color: #1976d2;
+  font-weight: bold;
+  background: #e3f2fd;
+  padding: 4rpx 8rpx;
+  border-radius: 8rpx;
+  margin-bottom: 4rpx;
+}
+
+.alumni-zone {
+  font-size: 20rpx;
+  color: #666;
+}
+
+.tree-number {
+  font-size: 22rpx;
+  color: #ff9800;
+  font-weight: bold;
+  display: block;
+  margin: 4rpx 0;
+}
+
+/* 名师林树木卡片 */
+.master-tree-card {
+  background: white;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  margin: 16rpx 20rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
+  border-left: 4rpx solid #4caf50;
+  width: calc(100% - 40rpx);
+}
+
+.tree-desc {
+  font-size: 22rpx;
+  color: #666;
+  display: block;
+  margin-top: 8rpx;
+  font-style: italic;
+}
+
+/* 通用浇水按钮 */
+.water-btn {
+  background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
+  color: white;
+  border: none;
+  border-radius: 20rpx;
+  padding: 12rpx 24rpx;
+  font-size: 24rpx;
+  font-weight: bold;
+  box-shadow: 0 2rpx 8rpx rgba(76, 175, 80, 0.3);
+}
+
+.water-btn::after {
+  border: none;
+}
+
+.tree-actions {
+  margin-top: 16rpx;
+  text-align: center;
+}

@@ -1,0 +1,35 @@
+{
+  "version": "1.0",
+  "collections": [
+    {
+      "name": "tree_points",
+      "description": "树木坐标点数据",
+      "data": "tree_points.json"
+    },
+    {
+      "name": "trees",
+      "description": "树木基本信息",
+      "data": "trees.json"
+    },
+    {
+      "name": "tree_care",
+      "description": "树木护理记录",
+      "data": "tree_care.json"
+    },
+    {
+      "name": "tree_comments",
+      "description": "树木评论",
+      "data": "tree_comments.json"
+    },
+    {
+      "name": "users",
+      "description": "用户信息",
+      "data": "users.json"
+    },
+    {
+      "name": "user_collections",
+      "description": "用户收藏",
+      "data": "user_collections.json"
+    }
+  ]
+} 

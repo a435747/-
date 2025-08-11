@@ -1,0 +1,13 @@
+// imageUtils.wxs
+// 注意：wxs无法直接访问getApp()，所以我们需要在这里硬编码URL
+// 实际应用中，可以考虑通过页面的data传递BASE_IMAGE_URL
+var BASE_IMAGE_URL = 'https://test-175573-5-1371111601.sh.run.tcloudbase.com/api/images';
+
+function getImageUrl(path) {
+  return BASE_IMAGE_URL + path;
+}
+
+module.exports = {
+  BASE_IMAGE_URL: BASE_IMAGE_URL,
+  getImageUrl: getImageUrl
+}; 

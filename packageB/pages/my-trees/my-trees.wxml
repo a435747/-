@@ -1,0 +1,277 @@
+<!-- 全新设计的我的树木页面 -->
+<wxs src="../../../utils/imageUtils.wxs" module="imageUtils" />
+
+<view class="modern-container">
+  <!-- 顶部用户信息卡片 -->
+  <view class="hero-card">
+    <view class="hero-background">
+      <view class="hero-pattern"></view>
+    </view>
+    <view class="hero-content">
+      <view class="user-profile">
+        <!-- 头像部分：始终可以点击更换 -->
+        <view class="avatar-container">
+          <button class="avatar-button" 
+                  open-type="chooseAvatar" 
+                  bind:chooseavatar="onChooseAvatar">
+            <image class="user-avatar" src="{{userInfo.avatarUrl || '../../images/default-avatar.png'}}" mode="aspectFill" binderror="onAvatarError" />
+            <view class="avatar-overlay" wx:if="{{!userInfo.avatarUrl}}">
+              <text class="avatar-text">点击设置头像</text>
+            </view>
+          </button>
+        </view>
+        
+        <!-- 用户信息部分 -->
+        <view class="user-info">
+          <!-- 昵称：始终可以点击编辑 -->
+          <view class="nickname-edit">
+            <input class="nickname-input" 
+                   type="nickname" 
+                   placeholder="点击输入昵称" 
+                   value="{{userInfo.nickName === '微信用户' ? '' : userInfo.nickName}}" 
+                   bind:change="onNicknameChange" />
+          </view>
+          <text class="user-title">🌱 环保守护者</text>
+        </view>
+      </view>
+      <view class="achievement-badge">
+        <text class="badge-number">{{statistics.waterCount}}</text>
+        <text class="badge-label">次浇水</text>
+      </view>
+      
+      <!-- 调试按钮 - 已隐藏 -->
+      <!-- <view class="debug-toggle" bindtap="showDebugPanel" style="position: absolute; top: 20rpx; right: 20rpx; background: #ff5722; color: white; padding: 8rpx 16rpx; border-radius: 20rpx; font-size: 20rpx; z-index: 100;">
+        🔧 调试
+      </view> -->
+    </view>
+  </view>
+
+  <!-- 数据统计卡片 -->
+  <view class="stats-grid">
+    <view class="stat-card">
+      <view class="stat-icon">🌳</view>
+      <view class="stat-content">
+        <text class="stat-number">{{statistics.treeCount}}</text>
+        <text class="stat-label">守护树木</text>
+      </view>
+    </view>
+    <view class="stat-card">
+      <view class="stat-icon">💧</view>
+      <view class="stat-content">
+        <text class="stat-number">{{statistics.waterCount || 0}}</text>
+        <text class="stat-label">桶水</text>
+      </view>
+    </view>
+    <view class="stat-card">
+      <view class="stat-icon">⭐</view>
+      <view class="stat-content">
+        <text class="stat-number">{{statistics.totalGrowth || 0}}</text>
+        <text class="stat-label">成长值</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 现代化标签导航 -->
+  <view class="modern-tabs">
+    <view class="tab-item {{item.active ? 'active' : ''}}" 
+          wx:for="{{tabs}}" 
+          wx:key="id" 
+          data-id="{{item.id}}" 
+          bindtap="switchTab">
+      <text class="tab-icon">{{item.icon}}</text>
+      <text class="tab-text">{{item.name}}</text>
+      <view class="tab-indicator" wx:if="{{item.active}}"></view>
+    </view>
+  </view>
+
+  <!-- 内容区域 -->
+  <view class="content-area">
+    
+    <!-- 浇水记录 -->
+    <scroll-view class="record-scroll" wx:if="{{activeTab === 'all' || activeTab === 'my'}}" 
+                 scroll-y="{{true}}" enhanced="{{true}}" bounces="{{true}}">
+      
+      <!-- 空状态 -->
+      <view class="empty-state" wx:if="{{(activeTab === 'all' && allWateringRecords.length === 0) || (activeTab === 'my' && myWateringRecords.length === 0)}}">
+        <view class="empty-icon">🌱</view>
+        <text class="empty-title">暂无浇水记录</text>
+        <text class="empty-subtitle">去给树木浇水吧！</text>
+      </view>
+
+      <!-- 记录卡片 -->
+      <view class="record-card" 
+            wx:for="{{activeTab === 'all' ? allWateringRecords : myWateringRecords}}" 
+            wx:key="timestamp">
+        <view class="record-header">
+          <view class="record-user">
+            <image class="record-avatar" src="{{item.userAvatar || item.avatar || '../../images/default-avatar.png'}}" mode="aspectFill" />
+            <view class="record-user-info">
+              <text class="record-username">{{item.userName || item.name || '匿名用户'}}</text>
+              <text class="record-time">{{item.date}} {{item.time}}</text>
+            </view>
+          </view>
+          <view class="record-amount">
+            <text class="amount-number">+{{item.growthValue || 70}}</text>
+            <text class="amount-label">成长值</text>
+          </view>
+        </view>
+        
+        <view class="record-body">
+          <view class="record-tree-info">
+            <view class="tree-icon-badge">{{item.treeEmoji || '🌳'}}</view>
+            <view class="tree-details">
+              <text class="tree-name">{{(item.region ? item.region + ' ' : '') + (item.treeId || item.id || item.treeName || '树木')}}</text>
+              <text class="tree-location">📍 {{item.region || ''}}</text>
+            </view>
+          </view>
+          
+          <view class="record-message" wx:if="{{item.message}}">
+            <view class="message-bubble">
+              <text class="message-text">"{{item.message}}"</text>
+            </view>
+          </view>
+        </view>
+        
+        <view class="record-footer">
+          <view class="record-stats">
+            <text class="water-stat">💧 {{item.waterAmount || 1}}桶水</text>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+
+    <!-- 校友林专区 -->
+    <scroll-view class="alumni-forest-scroll" wx:if="{{activeTab === 'alumni'}}" 
+                 scroll-y="{{true}}" enhanced="{{true}}" bounces="{{true}}">
+      
+      <!-- 校友林统计信息 -->
+      <view class="forest-stats-header">
+        <view class="forest-title">
+          <text class="title-icon">🎓</text>
+          <text class="title-text">校友林</text>
+          <text class="title-subtitle">七十载校友情深，2100棵树木见证</text>
+        </view>
+        
+        <view class="era-stats-grid">
+          <view class="era-stat-card" wx:for="{{alumniForestStats.zones}}" wx:key="zone">
+            <text class="era-zone">{{item.zone}}区</text>
+            <text class="era-period">{{item.era}}</text>
+            <text class="era-count">{{item.count}}棵</text>
+            <text class="era-range">编号 {{item.range}}</text>
+          </view>
+        </view>
+      </view>
+
+      
+    </scroll-view>
+
+    <!-- 名师林专区 -->
+    <scroll-view class="master-forest-scroll" wx:if="{{activeTab === 'master'}}" 
+                 scroll-y="{{true}}" enhanced="{{true}}" bounces="{{true}}">
+      
+      <!-- 名师林统计信息 -->
+      <view class="forest-stats-header">
+        <view class="forest-title">
+          <text class="title-icon">👨‍🏫</text>
+          <text class="title-text">名师林</text>
+          <text class="title-subtitle">师者风范，桃李满天下</text>
+        </view>
+        
+        <view class="master-stats-grid">
+          <view class="master-stat-card">
+            <text class="stat-title">南大门广场</text>
+            <text class="stat-desc">挺拔雪松 26棵</text>
+            <text class="stat-meaning">彰显学府庄重气象</text>
+          </view>
+          <view class="master-stat-card">
+            <text class="stat-title">图文中心北侧</text>
+            <text class="stat-desc">苍劲雪松 10棵</text>
+            <text class="stat-meaning">守护知识殿堂</text>
+          </view>
+          <view class="master-stat-card">
+            <text class="stat-title">内庭院</text>
+            <text class="stat-desc">优雅银杏 30棵</text>
+            <text class="stat-meaning">杏坛芬芳，金秋硕果</text>
+          </view>
+          <view class="master-stat-card">
+            <text class="stat-title">图文中心南侧</text>
+            <text class="stat-desc">常青油松 4棵</text>
+            <text class="stat-meaning">师道长存，基业长青</text>
+          </view>
+        </view>
+      </view>
+
+     
+    </scroll-view>
+
+    <!-- 普通树木展示 -->
+    <scroll-view class="trees-scroll" wx:if="{{activeTab === 'trees'}}" 
+                 scroll-y="{{true}}" enhanced="{{true}}" bounces="{{true}}">
+      
+      <!-- 空状态 -->
+      <view class="empty-state" wx:if="{{trees.length === 0}}">
+        <view class="empty-icon">🌲</view>
+        <text class="empty-title">暂无守护树木</text>
+        <text class="empty-subtitle">去认养一棵树吧！</text>
+      </view>
+
+      <!-- 树木卡片网格 -->
+      <view class="trees-grid">
+        <view class="tree-card" wx:for="{{trees}}" wx:key="id" bindtap="viewTreeDetail" data-tree="{{item}}">
+          <view class="tree-card-header">
+            <view class="tree-emoji">{{item.emoji || '🌳'}}</view>
+            <view class="tree-stage-badge">
+              <text class="stage-text">{{item.stageName || '幼苗'}}</text>
+            </view>
+          </view>
+          
+          <view class="tree-card-body">
+            <text class="tree-name">{{item.region || '名师林'}} {{item.treeId || item.id}}</text>
+            <text class="tree-species">{{item.species || ''}}</text>
+            <text class="tree-location" wx:if="{{item.region}}">📍 {{item.region}}</text>
+          </view>
+          
+          <view class="tree-progress-section">
+            <view class="progress-header">
+              <text class="progress-label">成长进度</text>
+              <text class="progress-numbers">{{item.points || 0}}/{{item.maxPoints || 100}}</text>
+            </view>
+            <view class="progress-bar">
+              <view class="progress-fill" style="width: {{(item.points || 0) / (item.maxPoints || 100) * 100}}%"></view>
+            </view>
+          </view>
+          
+          <view class="tree-stats-row">
+            <view class="tree-stat-item">
+              <text class="stat-icon">💧</text>
+              <text class="stat-text">{{item.waterCount || 0}}次</text>
+            </view>
+            <view class="tree-stat-item">
+              <text class="stat-icon">📈</text>
+              <text class="stat-text">{{item.totalGrowth || 0}}成长值</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  
+
+  
+
+  <!-- 开发调试面板 - 已隐藏 -->
+  <!-- <view class="debug-panel" wx:if="{{showDebug}}">
+    <view class="debug-header" bindtap="toggleDebug">
+      <text class="debug-title">🔧 调试面板</text>
+    </view>
+    <view class="debug-content" wx:if="{{debugExpanded}}">
+      <button class="debug-btn" bindtap="resetData" size="mini">重置数据</button>
+      <button class="debug-btn" bindtap="syncFromDatabase" size="mini">从数据库同步</button>
+      <button class="debug-btn" bindtap="testDatabaseConnection" size="mini">测试数据库</button>
+      <button class="debug-btn" bindtap="checkTreeData" size="mini">检查树木数据</button>
+      <button class="debug-btn" bindtap="resetAllTreesData" size="mini" style="background: #ff5722; color: white;">重置所有树木</button>
+      <text class="debug-info">浇水记录: {{allWateringRecords.length}}条 | 我的记录: {{myWateringRecords.length}}条 | 树木: {{trees.length}}棵</text>
+    </view>
+  </view> -->
+</view>

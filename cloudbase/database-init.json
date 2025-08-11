@@ -1,0 +1,303 @@
+{
+  "collections": [
+    {
+      "name": "users",
+      "description": "用户信息集合",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "String",
+          "description": "用户唯一标识(openid)"
+        },
+        {
+          "name": "_openid",
+          "type": "String",
+          "description": "微信用户openid"
+        },
+        {
+          "name": "nickName",
+          "type": "String",
+          "description": "用户昵称"
+        },
+        {
+          "name": "avatarUrl",
+          "type": "String",
+          "description": "用户头像"
+        },
+        {
+          "name": "totalWateringCount",
+          "type": "Number",
+          "description": "总浇水次数"
+        },
+        {
+          "name": "totalGrowthValue",
+          "type": "Number",
+          "description": "总成长值"
+        },
+        {
+          "name": "totalWaterAmount",
+          "type": "Number",
+          "description": "总水量"
+        },
+        {
+          "name": "joinDate",
+          "type": "String",
+          "description": "加入日期"
+        },
+        {
+          "name": "lastActiveTime",
+          "type": "Date",
+          "description": "最后活跃时间"
+        },
+        {
+          "name": "createdAt",
+          "type": "Date",
+          "description": "创建时间"
+        },
+        {
+          "name": "updatedAt",
+          "type": "Date",
+          "description": "更新时间"
+        }
+      ],
+      "permissions": {
+        "read": "doc._openid == auth.openid",
+        "write": "doc._openid == auth.openid"
+      }
+    },
+    {
+      "name": "trees",
+      "description": "树木信息集合",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "String",
+          "description": "树木ID"
+        },
+        {
+          "name": "treeId",
+          "type": "String",
+          "description": "树木唯一标识"
+        },
+        {
+          "name": "name",
+          "type": "String",
+          "description": "树木名称"
+        },
+        {
+          "name": "species",
+          "type": "String",
+          "description": "树木品种"
+        },
+        {
+          "name": "region",
+          "type": "String",
+          "description": "所在区域"
+        },
+        {
+          "name": "stage",
+          "type": "Number",
+          "description": "成长阶段"
+        },
+        {
+          "name": "points",
+          "type": "Number",
+          "description": "当前成长点数"
+        },
+        {
+          "name": "maxPoints",
+          "type": "Number",
+          "description": "当前阶段最大点数"
+        },
+        {
+          "name": "totalWateringCount",
+          "type": "Number",
+          "description": "总浇水次数"
+        },
+        {
+          "name": "totalWateringAmount",
+          "type": "Number",
+          "description": "总浇水量"
+        },
+        {
+          "name": "totalGrowthValue",
+          "type": "Number",
+          "description": "总成长值"
+        },
+        {
+          "name": "waterLevel",
+          "type": "Number",
+          "description": "水位百分比"
+        },
+        {
+          "name": "emoji",
+          "type": "String",
+          "description": "树木表情"
+        },
+        {
+          "name": "stageName",
+          "type": "String",
+          "description": "阶段名称"
+        },
+        {
+          "name": "guardDate",
+          "type": "String",
+          "description": "守护开始日期"
+        },
+        {
+          "name": "lastWatered",
+          "type": "String",
+          "description": "最后浇水时间"
+        },
+        {
+          "name": "createdAt",
+          "type": "Date",
+          "description": "创建时间"
+        },
+        {
+          "name": "updatedAt",
+          "type": "Date",
+          "description": "更新时间"
+        }
+      ],
+      "permissions": {
+        "read": "true",
+        "write": "true"
+      }
+    },
+    {
+      "name": "wateringRecords",
+      "description": "浇水记录集合",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "String",
+          "description": "记录ID"
+        },
+        {
+          "name": "_openid",
+          "type": "String",
+          "description": "用户openid"
+        },
+        {
+          "name": "userId",
+          "type": "String",
+          "description": "用户ID"
+        },
+        {
+          "name": "treeId",
+          "type": "String",
+          "description": "树木ID"
+        },
+        {
+          "name": "treeName",
+          "type": "String",
+          "description": "树木名称"
+        },
+        {
+          "name": "userName",
+          "type": "String",
+          "description": "用户名称"
+        },
+        {
+          "name": "userAvatar",
+          "type": "String",
+          "description": "用户头像"
+        },
+        {
+          "name": "message",
+          "type": "String",
+          "description": "浇水留言"
+        },
+        {
+          "name": "waterAmount",
+          "type": "Number",
+          "description": "浇水量"
+        },
+        {
+          "name": "growthValue",
+          "type": "Number",
+          "description": "成长值"
+        },
+        {
+          "name": "region",
+          "type": "String",
+          "description": "树木区域"
+        },
+        {
+          "name": "timestamp",
+          "type": "Number",
+          "description": "时间戳"
+        },
+        {
+          "name": "date",
+          "type": "String",
+          "description": "日期"
+        },
+        {
+          "name": "time",
+          "type": "String",
+          "description": "时间"
+        },
+        {
+          "name": "createdAt",
+          "type": "Date",
+          "description": "创建时间"
+        }
+      ],
+      "permissions": {
+        "read": "true",
+        "write": "doc._openid == auth.openid"
+      }
+    }
+  ],
+  "indexes": [
+    {
+      "collection": "wateringRecords",
+      "fields": [
+        {
+          "field": "timestamp",
+          "direction": "desc"
+        }
+      ]
+    },
+    {
+      "collection": "wateringRecords",
+      "fields": [
+        {
+          "field": "_openid",
+          "direction": "asc"
+        },
+        {
+          "field": "timestamp",
+          "direction": "desc"
+        }
+      ]
+    },
+    {
+      "collection": "trees",
+      "fields": [
+        {
+          "field": "treeId",
+          "direction": "asc"
+        }
+      ]
+    }
+  ],
+  "setup_instructions": {
+    "steps": [
+      "1. 打开微信开发者工具",
+      "2. 进入云开发控制台",
+      "3. 在数据库页面创建集合：users, trees, wateringRecords",
+      "4. 设置相应的权限（见permissions字段）",
+      "5. 创建索引以提高查询性能",
+      "6. 部署云函数：login, dataManager",
+      "7. 在小程序中测试云数据库功能"
+    ],
+    "permissions_guide": {
+      "users": "用户只能读写自己的数据",
+      "trees": "所有用户可读写（公共资源）",
+      "wateringRecords": "所有用户可读，但只能写入自己的记录"
+    }
+  }
+}

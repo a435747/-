@@ -1,0 +1,49 @@
+[
+  {
+    "id": "1",
+    "name": "银杏树",
+    "type": "乔木",
+    "scientificName": "Ginkgo biloba",
+    "emoji": "🌲",
+    "description": "这是一棵银杏树，在东北师范大学名师林区域。",
+    "images": [
+      "cloud://tree-images/tree1.jpg",
+      "cloud://tree-images/tree1_spring.jpg",
+      "cloud://tree-images/tree1_summer.jpg", 
+      "cloud://tree-images/tree1_autumn.jpg"
+    ],
+    "tags": ["名木古树", "校园地标", "秋季观赏"],
+    "growthLevel": 1,
+    "age": 108,
+    "height": 15.2,
+    "collectCount": 128,
+    "growthPoints": 0,
+    "status": "healthy",
+    "statusText": "健康成长",
+    "longitude": 116.3264,
+    "latitude": 39.9986,
+    "location": "东北师范大学名师林",
+    "features": [
+      {
+        "icon": "🍃",
+        "title": "叶形特殊",
+        "description": "扇形叶子，秋季呈金黄色，极具观赏价值"
+      },
+      {
+        "icon": "🌰",
+        "title": "银杏果实",
+        "description": "雌株会结银杏果，具有药用和食用价值"
+      },
+      {
+        "icon": "💪",
+        "title": "抗逆性强",
+        "description": "适应性强，寿命长，被称为活化石"
+      },
+      {
+        "icon": "🌬️",
+        "title": "净化空气",
+        "description": "能有效吸收有害气体，改善环境质量"
+      }
+    ]
+  }
+] 

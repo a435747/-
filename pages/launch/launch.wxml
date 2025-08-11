@@ -1,0 +1,18 @@
+<view class="launch-container">
+  <view class="branding">
+    <image class="logo" src="/images/logo.png" mode="aspectFit" />
+    <text class="title">西安航空学院树林养护</text>
+  </view>
+  <view class="loading">
+    <view class="spinner"></view>
+    <text class="tip">{{loadingText}}</text>
+  </view>
+
+  <view class="error" wx:if="{{error}}">
+    <text class="error-text">{{error}}</text>
+    <view class="actions">
+      <button class="btn" bindtap="onRetry">重试</button>
+      <button class="btn ghost" bindtap="onSkip">跳过进入地图</button>
+    </view>
+  </view>
+</view>
